@@ -12,6 +12,7 @@ void WifiSetup(){
   WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));   // subnet FF FF FF 00   
   WiFi.softAP(ssid); 
   server.on("/", handleRoot); 
+  server.on("/GetValue", SendLdrValueAsJson); 
   server.onNotFound(handleNotFound); 
   server.begin(); 
 
@@ -76,7 +77,7 @@ void handleRoot(){
   // LdrVal is from main tab
   char strTmp[5];
   itoa(LdrVal,strTmp,10);
-  strcat(html, "<div class=\"BigNumber\">");
+  strcat(html, "<div class=\"BigNumber\" id='LdrVal'>");
   strcat(html, strTmp);
   strcat(html, "</div>");
 
@@ -85,6 +86,15 @@ void handleRoot(){
   strcat(html, "<button name='btn_pressed' value='2'>אור הפוך</button>");
   strcat(html, "</form>");
 
+  strcat(html, "<script>");
+  strcat(html, "async function logMovies() {");
+  strcat(html, "const response = await fetch('/GetValue');");
+  strcat(html, "const movies = await response.json();");//{Ldr:13}
+  strcat(html, "document.getElementById('LdrVal').innerHTML=movies.Ldr;");
+  strcat(html, "}");
+  strcat(html, "setInterval(logMovies, 1000)");
+
+  strcat(html, "</script>");
   // the end of the body
   strcat(html, "</body>");
   // the end of my html documnet
