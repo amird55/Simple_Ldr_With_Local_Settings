@@ -50,7 +50,7 @@ void handleRoot(){
 	strcat(html, "<meta charset=\"UTF-8\">");
 	strcat(html, "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">");
 	strcat(html, "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-	strcat(html, "<META HTTP-EQUIV=\"refresh\" CONTENT=\"1\">");
+	// strcat(html, "<META HTTP-EQUIV=\"refresh\" CONTENT=\"1\">");
 	strcat(html, "<title>Big_Number</title>");
   //beginig of my css
   strcat(html, "<style>");
@@ -101,6 +101,18 @@ void handleRoot(){
  strcat(html, "</html>");
 
   server.send(200, "text/html", html);
+}
+void SendLdrValueAsJson(){
+  char json[100]="";
+  strcat(json,"{Ldr:");
+
+  char strTmp[5];
+  itoa(LdrVal,strTmp,10);
+  strcat(json, strTmp);
+  
+  strcat(json,"}");
+  
+  server.send(200, "application/json", json);
 }
 
 
